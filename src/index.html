@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!--alphine cdn-->
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <title>Introduction to Alpine</title>
+    <link rel="stylesheet" href="./output.css">
+    <style>
+        [x-cloak]{
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    
+    <h1 class="mb-4 font-bold text-4xl text-center">Auto Complete</h1>
+    <div 
+    x-data="{
+        search: 'a', 
+        items: ['apple', 'america', 'bomb', 'card', 'drag', 'elephant', 'fire', 'grass',],
+        filteritem(){
+            return this.items.filter(
+                item => item.startsWith(this.search)
+            )
+        }
+    }" 
+    class="mb-10 bg-gray-300 text-center py-8">
+        
+    <input x-model="search" type="search" class="py-2.5 px-6 rounded-lg">
+
+        <ul x-show="search" class="bg-red-200 max-w-screen-sm mx-auto mt-4">
+            <template x-for="item in filteritem">
+                <li x-text="item" class="border-2 border-gray-700 py-2.5"></li>
+            </template>
+        </ul>
+    </div>
+
+    <div x-data="{romil: false}" class="my-10 text-center">
+        <button x-on:click="romil = !romil" class="bg-blue-500 rounded-xl px-5 py-2.5 mx-auto text-white font-bold">Toggle Dropdown</button>
+
+        <ul x-show="romil" @click.outside="romil = false" class="max-w-screen-sm mx-auto mt-4">
+            <li class="border-b-2 border-gray-500 py-2.5 font-bold rounded-xl mb-1 bg-purple-100">Home</li>
+            <li class="border-b-2 border-gray-500 py-2.5 font-bold rounded-xl mb-1 bg-purple-100">about</li>
+            <li class="border-b-2 border-gray-500 py-2.5 font-bold rounded-xl mb-1 bg-purple-100">hello</li>
+            <li class="border-b-2 border-gray-500 py-2.5 font-bold rounded-xl mb-1 bg-purple-100">world</li>
+        </ul>
+    </div>
+
+    <div x-data="{ hello : 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dicta commodi incidunt sint, illum sunt autem dolores porro doloremque hic minus unde natus, ad laborum optio pariatur odio corrupti nisi quis quidem ipsum iste quos ipsam. Ducimus id debitis asperiores culpa.'}">
+        <h1 x-text="'RoMIL' + ' ' + hello" class="text-4xl font-extrabold"></h1>
+    </div>
+
+    <div x-data="{ number: 0 }" class="my-8 bg-red-300 text-center space-y-8 py-8 flex flex-col">
+
+        <button x-on:click="number++" class="text-4xl font-extrabold border-2 border-gray-900 p-2.5">Click Here for Increment in NUMBER</button>
+
+        <div><span class="font-extrabold text-4xl">Number :</span> <span x-text="number" class="text-4xl font-extrabold bg-slate-200 w-28 mx-auto px-8 py-4 rounded-full"></span></div>
+
+        <span x-show=" number >= 5 ">
+            please be careful you are going to lose my lucky number and  it's <span class="text-4xl font-extrabold">7</span>
+        </span>
+    </div>
+    
+    
+
+    <div x-data="{}" class="text-right m-4">
+        <div @notify="alert('Lorem ipsum dolor sit amet consectetur, adipisicing elit. Alias nam, corporis exercitationem itaque voluptate iste quo odio, suscipit totam commodi neque nobis quibusdam ab eaque laborum amet, doloremque fuga error facilis? Dolore, nostrum. Possimus autem voluptatibus pariatur soluta minima error. ')" class="">
+            <div @notify="alert('HELLo WoRLD !!')">
+                <div @notify="alert('Jai Shree Krishna')"> 
+                    <button @click="$dispatch('notify')" class="text-white bg-yellow-400 font-bold py-2.5 px-4 rounded-lg">Click Here...</button>
+                    <!--dispatch can access the notification or alert related dipatch key value-->
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div x-data="{ foo: { bar: 'baz' }}" x-init="$watch('foo.bar', value => console.log(value))">
+        <button @click="foo.bar = 'bob'">Toggle Open reflect the console value</button>
+    </div>
+
+    <div x-data="{}" class="text-center my-8">
+        <button type="button" @click="$el.innerHTML = 'HEllO WoRLD !' " class="border-2 rounded-lg text-lg font-bold py-2.5 px-4 bg-red-300">Replace me with Hello world !!</button>
+    </div>
+
+    <div x-data="{}" class="text-center">
+        <span x-ref="text2" class="bg-cyan-200 py-4">Lorem ipsum, dolor sit amet consectetur adipisicing elit. Impedit quidem voluptate architecto!
+            <button class="p-4 bg-black text-white font-bold text-2xl" @click="$refs.text2.remove()">X</button>
+        </span>
+    </div>
+
+    <div x-data="{}" class="text-center my-16">
+        <button @click="$refs.text.remove()" class="border-2 border-cyan-800 rounded-lg py-2.5 px-4 mx-4 font-bold bg-teal-300">Remove Text</button>
+ 
+        <span x-ref="text" class="text-4xl font-bold">Hello World ! 👋</span>
+
+        <button @click="$refs.text.remove()" class="border-2 border-cyan-800 rounded-lg py-2.5 px-4 mx-4 font-bold bg-teal-300">Remove Text</button>
+    </div>
+
+    <div x-data="{name: 'EcuBIZ', message: 'Hello <b>WORLD</b>!'}" class="text-center">
+        <h1 x-text="name" class="text-4xl"></h1>
+        <h1 x-html="message" class="text-4xl"></h1><!--when you are using html rather then normal text at a time use X-HTML-->
+    </div>
+
+    <!--this console will execute at a rendering time-->
+    <div x-data="{  init() {console.log('This will be initialize automatically at a rendar time')}  }"></div>
+
+    <h1 class="text-center text-4xl font-extrabold bg-green-400 my-8 py-2.5">Alpine JS</h1>
+
+    <div x-data="{ open: false }" x-transition class="text-center my-8 bg-slate-500 py-2.5">
+        <!--if you are adding true as a second condition then work as an ONLY OPEN trigger and !OPEN will make a button like a toggle button for open and close or else you can use toggle-->
+        <button @click="open =! open"  class="border-2 px-5 py-2.5 rounded-lg bg-red-300 font-bold font-mono">Click here !!</button>
+     
+        <!--x-transition.delay.5000ms for delay any transition-->
+        <span x-show="open" x-cloak x-transition.duration.1500ms class="block max-w-screen-sm lg:px-32 py-2.5 mt-4 border-2 rounded-lg bg-red-600 text-white text-lg mx-auto font-sans">
+            Lorem ipsum dolor sit amet consectetur adipisicing elit. Totam facilis error, at aspernatur culpa porro. Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolor, id iste. Facilis obcaecati fugit aperiam est rerum illum, id sit?
+        </span>
+    </div>
+
+    <div x-data="{ open: false }" class="text-center">
+
+        <button @click="open =! open" class="p-2.5 px-5 bg-red-400 text-white font-bold rounded-lg border-4 border-black">Click here for Dropdown !!</button>
+
+        <ul x-show="open" x-cloak x-transition.duration.1000ms class="bg-green-300 max-w-screen-sm mx-auto rounded-lg mt-4 space-y-4 py-4">
+            <li class="text-lg py-2.5 border-2 border-black bg-red-300 hover:bg-red-500 hover:text-white rounded-lg w-52 mx-auto font-semibold">Home</li>
+            <li class="text-lg py-2.5 border-2 border-black bg-red-300 hover:bg-red-500 hover:text-white rounded-lg w-52 mx-auto font-semibold">About</li>
+            <li class="text-lg py-2.5 border-2 border-black bg-red-300 hover:bg-red-500 hover:text-white rounded-lg w-52 mx-auto font-semibold">Services</li>
+            <li class="text-lg py-2.5 border-2 border-black bg-red-300 hover:bg-red-500 hover:text-white rounded-lg w-52 mx-auto font-semibold">Contact</li>
+        </ul>
+    </div>
+
+    <div x-data="{ open: false }" class="text-center my-8 relative">
+        <button @click="open =! open" class="bg-purple-600 text-white font-bold text-lg px-4 py-2.5 rounded-lg">Modal</button>
+
+        <section>
+            <p x-show="open" x-cloak class="text-white bg-black tracking-wider mt-4 max-w-screen-sm p-2.5 mx-auto absolute bottom-24 right-96 z-40">Lorem ipsum dolor sit, amet consectetur adipisicing elit. Eligendi voluptatibus ea iure possimus necessitatibus nisi sequi. Sed, neque. Fugit quasi reprehenderit corrupti ea suscipit minima aut tempora adipisci, aliquam minus. Lorem ipsum dolor sit amet consectetur adipisicing elit. Fugit assumenda adipisci omnis accusamus quos reprehenderit consequuntur officia, nesciunt quisquam recusandae maiores minima rem libero praesentium commodi! Suscipit rem provident odio et praesentium magnam omnis sapiente, ipsam ducimus assumenda earum laborum explicabo quam similique temporibus velit sequi excepturi consequuntur. Magnam, perferendis.</p>
+        </section>
+    </div>
+
+    <div x-data="{msg: null}" class="text-center bg-yellow-400 py-2">
+        <input type="text" x-model="msg" class="border-2 border-black rounded-lg px-2.5 py-1">
+        <button type="text" x-on:click=" msg = 'changed' " class="bg-green-400 border-2 border-red-400 ">Change msg</button>
+    </div>
+
+
+    <div class="auto-complete-copy">
+        <form action="" autocomplete="off">
+        
+            <div  class="d-flex justify-content-center input-group" >
+            <input type="text" id="text-group" placeholder="Country" class="p-2" x-model="message">
+            <button type="submit" class="btn btn-dark" x-on:click="">Submit</button>
+            </div>
+    
+            <ul class="list"></ul>
+        </form>
+    </div>
+
+    <!--
+    <div x-data="{ open: false }">
+        <button @click="open = ! open">Toggle</button>
+     
+        <div
+            x-show="open"
+            x-transition:enter="transition ease-out duration-300"
+            x-transition:enter-start="opacity-0 scale-90"
+            x-transition:enter-end="opacity-100 scale-100"
+            x-transition:leave="transition ease-in duration-300"
+            x-transition:leave-start="opacity-100 scale-100"
+            x-transition:leave-end="opacity-0 scale-90"
+        >Hello 👋</div>
+    </div>-->
+
+    <ul x-data="{ colors: ['a', 'b','c','d','e','f','g','h','i','j', ]  }" class="text-center items-center" style="list-style-image: url(../in.png.webp); list-style-position: inside; padding: 5rem;">
+        <template x-for="color in colors">
+            <li x-text="color" class="font-mono font-bold text-lg my-8"></li>
+        </template>
+    </ul>
+
+    <!--if you need to iterate numbers than-->
+    <ul x-data="{}" class="text-center justify-center lg:flex hidden space-x-4">
+        <template x-for="i in 25">
+            <li x-text="i + '$' " class="font-mono font-extrabold text-2xl hidden xl:inline-flex"></li>
+        </template>
+    </ul>
+
+    <ul 
+    x-data="{ numbers: [ {id: 1, label: 'romil'}, {id: 2, label: 200}, {id: 3, label: 300}, {id: 4, label: 80000}, {id: 5, label: 'jai ho'}] }" class="text-center">
+        <template x-for="number in numbers" :key="number.id">
+            <li x-text="[number.id + number.label]" class=""></li>
+        </template>
+        <!--you can separately select id or value by their key-->
+    </ul>
+
+    <div x-data="{ label: 'Hello' }" x-effect="console.log(label)">
+        <button @click="label += ' World!'">Change Message</button>
+    </div>
+
+</body>
+</html>
